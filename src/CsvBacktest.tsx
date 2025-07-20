@@ -222,19 +222,6 @@ const CsvBacktest: React.FC = () => {
   const [span1, setSpan1] = useState<number>(20);
   const [span2, setSpan2] = useState<number>(30);
 
-
-  useEffect(() => {
-    const observer = new MutationObserver(() => {
-      const html = document.documentElement;
-    });
-
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-
-
-    return () => observer.disconnect();
-  }, []);
-
-
   useEffect(() => {
     if (companies[activeCompany] && companies[activeCompany].chartData.length > 0) {
       setRange({ start: 0, end: companies[activeCompany].chartData.length - 1 });
