@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
