@@ -222,6 +222,23 @@ const CsvBacktest: React.FC = () => {
   const [span1, setSpan1] = useState<number>(20);
   const [span2, setSpan2] = useState<number>(30);
 
+
+  const [, setCurrentTheme] = useState<'light' | 'dark'>('light');
+
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      const html = document.documentElement;
+      setCurrentTheme(html.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+    setCurrentTheme(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+
+    return () => observer.disconnect();
+  }, []);
+
+
   useEffect(() => {
     if (companies[activeCompany] && companies[activeCompany].chartData.length > 0) {
       setRange({ start: 0, end: companies[activeCompany].chartData.length - 1 });
@@ -378,8 +395,8 @@ const CsvBacktest: React.FC = () => {
     <div className="flex flex-col lg:flex-row h-screen w-screen bg-background text-foreground overflow-hidden">
       <style>{`
         ::-webkit-scrollbar {
-          width: 2px;
-          height: 2px;
+          width: 1px;
+          height: 1px;
         }
 
         ::-webkit-scrollbar-track {
