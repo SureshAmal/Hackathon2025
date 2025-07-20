@@ -222,17 +222,14 @@ const CsvBacktest: React.FC = () => {
   const [span1, setSpan1] = useState<number>(20);
   const [span2, setSpan2] = useState<number>(30);
 
-  const [currentTheme, setCurrentTheme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
     const observer = new MutationObserver(() => {
       const html = document.documentElement;
-      setCurrentTheme(html.classList.contains('dark') ? 'dark' : 'light');
     });
 
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
-    setCurrentTheme(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
 
     return () => observer.disconnect();
   }, []);
