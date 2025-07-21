@@ -400,12 +400,12 @@ const CsvBacktest: React.FC = () => {
         }
 
         ::-webkit-scrollbar-track {
-          background: var(--background); 
+          background: var(--background);
         }
 
         ::-webkit-scrollbar-thumb {
           background-color: var(--primary);
-          border-radius: 2px; 
+          border-radius: 2px;
           border: 1px solid var(--background);
         }
 
@@ -415,7 +415,7 @@ const CsvBacktest: React.FC = () => {
         }
 
         html {
-          scrollbar-width: thin; 
+          scrollbar-width: thin;
           scrollbar-color: var(--primary) var(--background);
         }
       `}</style>
@@ -428,56 +428,61 @@ const CsvBacktest: React.FC = () => {
         {companies.length > 0 && (
           <>
             <h3 className="text-xl font-bold mb-4">Top Companies by Total Profit</h3>
-            <Bar
-              data={topCompaniesBarData}
-              options={{
-                responsive: true,
-                plugins: {
-                  legend: { display: false },
-                  title: {
-                    display: true,
-                    text: "Top Companies by Total Profit",
-                    color: getCssVariable('--foreground')
+            <div className="relative h-[300px] lg:h-auto">
+              <Bar
+                data={topCompaniesBarData}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false, // Important for controlling height
+                  plugins: {
+                    legend: { display: false },
+                    title: {
+                      display: true,
+                      text: "Top Companies by Total Profit",
+                      color: getCssVariable('--foreground')
+                    },
                   },
-                },
-                scales: {
-                  x: {
-                    display: true,
-                    title: { display: true, text: "Company", color: getCssVariable('--foreground') },
-                    ticks: { color: getCssVariable('--foreground') },
-                    grid: { color: getCssVariable('--border') }
+                  scales: {
+                    x: {
+                      display: true,
+                      title: { display: true, text: "Company", color: getCssVariable('--foreground') },
+                      ticks: { color: getCssVariable('--foreground') },
+                      grid: { color: getCssVariable('--border') }
+                    },
+                    y: {
+                      display: true,
+                      title: { display: true, text: "Total Profit", color: getCssVariable('--foreground') },
+                      ticks: { color: getCssVariable('--foreground') },
+                      grid: { color: getCssVariable('--border') }
+                    },
                   },
-                  y: {
-                    display: true,
-                    title: { display: true, text: "Total Profit", color: getCssVariable('--foreground') },
-                    ticks: { color: getCssVariable('--foreground') },
-                    grid: { color: getCssVariable('--border') }
-                  },
-                },
-              }}
-            />
-            <table className="min-w-full text-sm mt-6">
-              <thead>
-                <tr>
-                  <th className="px-2 py-1 border-b border-border text-center">Company</th>
-                  <th className="px-2 py-1 border-b border-border text-center">Total Profit</th>
-                  <th className="px-2 py-1 border-b border-border text-center">Return %</th>
-                  <th className="px-2 py-1 border-b border-border text-center">Win Rate %</th>
-                  <th className="px-2 py-1 border-b border-border text-center">Trades</th>
-                </tr>
-              </thead>
-              <tbody>
-                {topCompanies.map((c) => (
-                  <tr key={c.name} className="odd:bg-muted even:bg-background">
-                    <td className="px-2 py-1 border-b border-border text-center">{c.name}</td>
-                    <td className="px-2 py-1 border-b border-border text-center">{c.profit.toFixed(2)}</td>
-                    <td className="px-2 py-1 border-b border-border text-center">{c.totalReturn}%</td>
-                    <td className="px-2 py-1 border-b border-border text-center">{c.winRate}%</td>
-                    <td className="px-2 py-1 border-b border-border text-center">{c.trades}</td>
+                }}
+              />
+            </div>
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-sm mt-6">
+                <thead>
+                  <tr>
+                    <th className="px-2 py-1 border-b border-border text-center">Company</th>
+                    <th className="px-2 py-1 border-b border-border text-center">Total Profit</th>
+                    <th className="px-2 py-1 border-b border-border text-center">Return %</th>
+                    <th className="px-2 py-1 border-b border-border text-center">Win Rate %</th>
+                    <th className="px-2 py-1 border-b border-border text-center">Trades</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {topCompanies.map((c) => (
+                    <tr key={c.name} className="odd:bg-muted even:bg-background">
+                      <td className="px-2 py-1 border-b border-border text-center">{c.name}</td>
+                      <td className="px-2 py-1 border-b border-border text-center">{c.profit.toFixed(2)}</td>
+                      <td className="px-2 py-1 border-b border-border text-center">{c.totalReturn}%</td>
+                      <td className="px-2 py-1 border-b border-border text-center">{c.winRate}%</td>
+                      <td className="px-2 py-1 border-b border-border text-center">{c.trades}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </>
         )}
       </div>
@@ -636,40 +641,43 @@ const CsvBacktest: React.FC = () => {
                     </div>
                   </CardContent>
                 </Card>
-                <Line
-                  data={getChartData(filteredChartData, selectedIndicator, span1, span2)}
-                  options={{
-                    responsive: true,
-                    plugins: {
-                      legend: {
-                        position: "top" as const,
-                        labels: {
+                <div className="relative h-[300px] lg:h-[500px]">
+                  <Line
+                    data={getChartData(filteredChartData, selectedIndicator, span1, span2)}
+                    options={{
+                      responsive: true,
+                      maintainAspectRatio: false,
+                      plugins: {
+                        legend: {
+                          position: "top" as const,
+                          labels: {
+                            color: getCssVariable('--foreground')
+                          }
+                        },
+                        title: {
+                          display: true,
+                          text: `${selectedIndicator} Strategy Chart`,
                           color: getCssVariable('--foreground')
-                        }
+                        },
                       },
-                      title: {
-                        display: true,
-                        text: `${selectedIndicator} Strategy Chart`,
-                        color: getCssVariable('--foreground')
+                      interaction: { mode: "index", intersect: false },
+                      scales: {
+                        x: {
+                          display: true,
+                          title: { display: true, text: "Date", color: getCssVariable('--foreground') },
+                          ticks: { color: getCssVariable('--foreground') },
+                          grid: { color: getCssVariable('--border') }
+                        },
+                        y: {
+                          display: true,
+                          title: { display: true, text: "Price", color: getCssVariable('--foreground') },
+                          ticks: { color: getCssVariable('--foreground') },
+                          grid: { color: getCssVariable('--border') }
+                        },
                       },
-                    },
-                    interaction: { mode: "index", intersect: false },
-                    scales: {
-                      x: {
-                        display: true,
-                        title: { display: true, text: "Date", color: getCssVariable('--foreground') },
-                        ticks: { color: getCssVariable('--foreground') },
-                        grid: { color: getCssVariable('--border') }
-                      },
-                      y: {
-                        display: true,
-                        title: { display: true, text: "Price", color: getCssVariable('--foreground') },
-                        ticks: { color: getCssVariable('--foreground') },
-                        grid: { color: getCssVariable('--border') }
-                      },
-                    },
-                  }}
-                />
+                    }}
+                  />
+                </div>
                 {currentCompanyData.chartData.length > 1 && (
                   <div className="flex flex-col items-center gap-2 my-6 w-full">
                     <div className="flex items-center justify-between w-full px-4 text-sm font-medium text-muted-foreground">
@@ -737,52 +745,57 @@ const CsvBacktest: React.FC = () => {
               {companies.length > 0 && (
                 <>
                   <h3 className="text-xl font-bold mb-4">Top Companies by Total Profit</h3>
-                  <Bar
-                    data={topCompaniesBarData}
-                    options={{
-                      responsive: true,
-                      plugins: {
-                        legend: { display: false },
-                        title: { display: true, text: "Top Companies by Total Profit", color: getCssVariable('--foreground') },
-                      },
-                      scales: {
-                        x: {
-                          display: true,
-                          title: { display: true, text: "Company", color: getCssVariable('--foreground') },
-                          ticks: { color: getCssVariable('--foreground') },
-                          grid: { color: getCssVariable('--border') }
+                  <div className="relative h-[300px] lg:h-auto">
+                    <Bar
+                      data={topCompaniesBarData}
+                      options={{
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                          legend: { display: false },
+                          title: { display: true, text: "Top Companies by Total Profit", color: getCssVariable('--foreground') },
                         },
-                        y: {
-                          display: true,
-                          title: { display: true, text: "Total Profit", color: getCssVariable('--foreground') },
-                          ticks: { color: getCssVariable('--foreground') },
-                          grid: { color: getCssVariable('--border') }
+                        scales: {
+                          x: {
+                            display: true,
+                            title: { display: true, text: "Company", color: getCssVariable('--foreground') },
+                            ticks: { color: getCssVariable('--foreground') },
+                            grid: { color: getCssVariable('--border') }
+                          },
+                          y: {
+                            display: true,
+                            title: { display: true, text: "Total Profit", color: getCssVariable('--foreground') },
+                            ticks: { color: getCssVariable('--foreground') },
+                            grid: { color: getCssVariable('--border') }
+                          },
                         },
-                      },
-                    }}
-                  />
-                  <table className="min-w-full text-sm mt-6">
-                    <thead>
-                      <tr>
-                        <th className="px-2 py-1 border-b border-border text-center">Company</th>
-                        <th className="px-2 py-1 border-b border-border text-center">Total Profit</th>
-                        <th className="px-2 py-1 border-b border-border text-center">Return %</th>
-                        <th className="px-2 py-1 border-b border-border text-center">Win Rate %</th>
-                        <th className="px-2 py-1 border-b border-border text-center">Trades</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {topCompanies.map((c) => (
-                        <tr key={c.name} className="odd:bg-muted even:bg-background">
-                          <td className="px-2 py-1 border-b border-border text-center">{c.name}</td>
-                          <td className="px-2 py-1 border-b border-border text-center">{c.profit.toFixed(2)}</td>
-                          <td className="px-2 py-1 border-b border-border text-center">{c.totalReturn}%</td>
-                          <td className="px-2 py-1 border-b border-border text-center">{c.winRate}%</td>
-                          <td className="px-2 py-1 border-b border-border text-center">{c.trades}</td>
+                      }}
+                    />
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full text-sm mt-6">
+                      <thead>
+                        <tr>
+                          <th className="px-2 py-1 border-b border-border text-center">Company</th>
+                          <th className="px-2 py-1 border-b border-border text-center">Total Profit</th>
+                          <th className="px-2 py-1 border-b border-border text-center">Return %</th>
+                          <th className="px-2 py-1 border-b border-border text-center">Win Rate %</th>
+                          <th className="px-2 py-1 border-b border-border text-center">Trades</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {topCompanies.map((c) => (
+                          <tr key={c.name} className="odd:bg-muted even:bg-background">
+                            <td className="px-2 py-1 border-b border-border text-center">{c.name}</td>
+                            <td className="px-2 py-1 border-b border-border text-center">{c.profit.toFixed(2)}</td>
+                            <td className="px-2 py-1 border-b border-border text-center">{c.totalReturn}%</td>
+                            <td className="px-2 py-1 border-b border-border text-center">{c.winRate}%</td>
+                            <td className="px-2 py-1 border-b border-border text-center">{c.trades}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </>
               )}
             </div>
