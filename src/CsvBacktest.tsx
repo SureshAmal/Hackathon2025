@@ -428,7 +428,7 @@ const CsvBacktest: React.FC = () => {
         {companies.length > 0 && (
           <>
             <h3 className="text-xl font-bold mb-4">Top Companies by Total Profit</h3>
-            <div className="relative h-[300px] lg:h-auto">
+            <div className="relative h-[300px] lg:h-[300px]">
               <Bar
                 data={topCompaniesBarData}
                 options={{
